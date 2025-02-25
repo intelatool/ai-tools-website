@@ -1,0 +1,75 @@
+<div id="incognito-warning" class="warning" style="display: none;">
+    Warning: Some features may not work properly in incognito/private mode. Please switch to a standard browsing window for full functionality.
+</div>
+
+<!-- AI Tools Section -->
+<div class="tool-container">
+    <div class="tool">
+        <h2>AI Writing Assistant</h2>
+        <p><a href="https://www.quillbot.com/" target="_blank">Open Quillbot</a></p>
+    </div>
+    <div class="tool">
+        <h2>AI Chatbot (Perplexity AI)</h2>
+        <p><a href="https://www.perplexity.ai/" target="_blank">Open Perplexity AI</a></p>
+    </div>
+    <div class="tool">
+        <h2>AI Research Assistant (Elicit AI)</h2>
+        <iframe src="https://elicit.org/" loading="lazy"></iframe>
+    </div>
+    <div class="tool">
+        <h2>AI Music Generator (Boomy AI)</h2>
+        <p><a href="https://boomy.com/" target="_blank">Open Boomy AI</a></p>
+    </div>
+    <div class="tool">
+        <h2>AI Coding Assistant (Replit AI)</h2>
+        <iframe src="https://replit.com/" loading="lazy"></iframe>
+    </div>
+</div>
+
+<!-- AI Chatbot Section -->
+<h2>AI Chat Assistant</h2>
+<input id="userInput" type="text" placeholder="Ask me anything...">
+<button onclick="getAIResponse()">Ask</button>
+<div id="output"></div>
+
+<script>
+    async function getAIResponse() {
+        const userInput = document.getElementById("userInput").value;
+        const response = await fetch("https://api.openai.com/v1/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer YOUR_API_KEY",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: userInput }]
+            })
+        });
+        const data = await response.json();
+        document.getElementById("output").innerText = data.choices[0].message.content;
+    }
+
+    // Detect Incognito Mode
+    (async function detectIncognito() {
+        try {
+            const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+            if (!fs) return;
+            fs(window.TEMPORARY, 100, function () {}, function () {
+                document.getElementById("incognito-warning").style.display = "block";
+            });
+        } catch (e) {
+            document.getElementById("incognito-warning").style.display = "block";
+        }
+    })();
+</script>
+
+<!-- Ad Space -->
+<h2>Sponsored Ads</h2>
+<div>
+    <p>Place Google AdSense or banner ads here.</p>
+    <!-- Add your Google AdSense code below -->
+    <script>
+        // Example: Google AdSense code goes here
+    </script>
+</div>
